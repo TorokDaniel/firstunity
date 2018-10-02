@@ -999,7 +999,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openSpeed: 33.58
-  switchButton: {fileID: 1386421121}
+  pressurePlate: {fileID: 1386421121}
 --- !u!1 &2011961831
 GameObject:
   m_ObjectHideFlags: 0
