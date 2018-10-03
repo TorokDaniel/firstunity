@@ -998,8 +998,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8eefc2a9369600e458202953f8a77607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openSpeed: 33.58
-  pressurePlate: {fileID: 1386421121}
+  OpenSpeed: 33.58
+  PressurePlate: {fileID: 1386421121}
 --- !u!1 &2011961831
 GameObject:
   m_ObjectHideFlags: 0
