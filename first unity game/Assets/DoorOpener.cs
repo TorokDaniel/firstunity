@@ -2,25 +2,25 @@
 
 public class DoorOpener : MonoBehaviour {
 
-    public float openSpeed = 10;
-    public PressurePlate pressurePlate;
-    bool activated = false;
+    public float OpenSpeed = 10;
+    public PressurePlate PressurePlate;
+    private bool _activated = false;
 
     // Use this for initialization
-    void Start () {
-        pressurePlate.triggerDelegate = delegate () { activated = true; };
+    private void Start () {
+        PressurePlate.TriggerDelegate = delegate { _activated = true; };
     }
 
     // Update is called once per frame
-    void Update () {
-        if (!activated)
+    private void Update () {
+        if (!_activated)
         {
             return;
         }
 
         if (transform.eulerAngles.y < 90)
         {
-            transform.Rotate(Vector3.up * Time.deltaTime * openSpeed);
+            transform.Rotate(Vector3.up * Time.deltaTime * OpenSpeed);
         }
     }
 

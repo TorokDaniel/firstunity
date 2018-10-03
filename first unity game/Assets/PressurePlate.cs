@@ -3,21 +3,11 @@
 public class PressurePlate : MonoBehaviour {
 
     internal delegate void Delegate();
-    internal Delegate triggerDelegate;
-
-    // Use this for initialization
-    void Start () {
-
-	}
-
-    // Update is called once per frame
-    void Update () {
-
-    }
+    internal Delegate TriggerDelegate;
 
     private void OnTriggerEnter(Collider other)
     {
-        triggerDelegate();
+        TriggerDelegate();
     }
 
 }
