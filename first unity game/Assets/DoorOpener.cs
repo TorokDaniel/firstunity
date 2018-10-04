@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DoorOpener : MonoBehaviour
@@ -6,8 +7,8 @@ public class DoorOpener : MonoBehaviour
 
     public float OpenSpeed = 10;
     public List<PressurePlate> PressurePlates;
-
-    private int _activationCounter = 0;
+    
+    private readonly Dictionary<PressurePlate, bool> _activations = new Dictionary<PressurePlate, bool>();
     private bool _activated = false;
 
     // Use this for initialization
@@ -15,10 +16,11 @@ public class DoorOpener : MonoBehaviour
     {
         PressurePlates.ForEach(pressurePlate =>
         {
+            _activations.Add(pressurePlate, false);
             pressurePlate.AddDelegate(delegate
             {
-                _activationCounter += 1;
-                _activated = _activationCounter >= PressurePlates.Count;
+                _activations[pressurePlate] = true;
+                _activated = IsAllPressurePlateActivated();
             });
         });
     }
@@ -35,6 +37,11 @@ public class DoorOpener : MonoBehaviour
         {
             transform.Rotate(Vector3.up * Time.deltaTime * OpenSpeed);
         }
+    }
+
+    private bool IsAllPressurePlateActivated()
+    {
+        return _activations.Values.All(v => v);
     }
 
 }
