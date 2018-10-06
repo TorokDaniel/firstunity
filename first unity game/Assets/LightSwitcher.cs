@@ -3,14 +3,14 @@
 public class LightSwitcher : MonoBehaviour
 {
 
-	public PressurePlate PressurePlate;
+	public SingleTriggerDelegate SingleTriggerDelegate;
 	private Light _light;
 
 	// Use this for initialization
 	private void Start ()
 	{
 		_light = GetComponent<Light>();
-		PressurePlate.AddDelegate(delegate { _light.enabled = false; });
+		SingleTriggerDelegate.AddDelegate(delegate { _light.enabled = false; });
 	}
 
 }
