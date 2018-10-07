@@ -19,9 +19,13 @@ public class DoorOpener : MonoBehaviour
             return;
         }
 
-        if (transform.eulerAngles.y < 90)
+        if (transform.localEulerAngles.y < 90)
         {
             transform.Rotate(Vector3.up * Time.deltaTime * OpenSpeed);
+        }
+        else
+        {
+            _activated = false;
         }
     }
 }
