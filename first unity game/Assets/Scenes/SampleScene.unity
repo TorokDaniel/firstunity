@@ -470,6 +470,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ObjectToFollow: {fileID: 1039836688}
+  FollowRate: 0.025
 --- !u!1001 &649173284
 Prefab:
   m_ObjectHideFlags: 0

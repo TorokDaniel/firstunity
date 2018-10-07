@@ -4,6 +4,9 @@ using UnityEngine;
 public class AltitudeObjectFollower : MonoBehaviour
 {
     public GameObject ObjectToFollow;
+    
+    [Range(0.0F, 1.0F)]
+    public float FollowRate = 0.025F;
 
     private Transform _selfTransform;
     private Transform _followedTransform;
@@ -23,7 +26,10 @@ public class AltitudeObjectFollower : MonoBehaviour
         var relativeAngleToGroundInRad = relativeAngleToGround * (Math.PI/180);
         var distanceToGroundCenter = selfPosition.y * Math.Tan(relativeAngleToGroundInRad);
         var centerPositionedZ = followedPosition.z - (float) distanceToGroundCenter;
+
+        var newX = selfPosition.x + (followedPosition.x - selfPosition.x) * FollowRate;
+        var newZ = selfPosition.z + (centerPositionedZ - selfPosition.z) * FollowRate;
         
-        _selfTransform.position = new Vector3(followedPosition.x, selfPosition.y, centerPositionedZ);
+        _selfTransform.position = new Vector3(newX, selfPosition.y, newZ);
     }    
 }
