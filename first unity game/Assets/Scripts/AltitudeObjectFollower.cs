@@ -10,11 +10,13 @@ public class AltitudeObjectFollower : MonoBehaviour
 
     private Transform _selfTransform;
     private Transform _followedTransform;
+    private float _deltaY;
     
     private void Start()
     {
         _selfTransform = GetComponent<Transform>();
         _followedTransform = ObjectToFollow.GetComponent<Transform>();
+        _deltaY = _selfTransform.position.y - _followedTransform.position.y;
     }
     
     private void Update()
@@ -29,7 +31,8 @@ public class AltitudeObjectFollower : MonoBehaviour
 
         var newX = selfPosition.x + (followedPosition.x - selfPosition.x) * FollowRate;
         var newZ = selfPosition.z + (centerPositionedZ - selfPosition.z) * FollowRate;
+        var newY = selfPosition.y + (followedPosition.y + _deltaY - selfPosition.y) * FollowRate;
         
-        _selfTransform.position = new Vector3(newX, selfPosition.y, newZ);
+        _selfTransform.position = new Vector3(newX, newY, newZ);
     }    
 }
