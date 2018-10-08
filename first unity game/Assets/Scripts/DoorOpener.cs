@@ -9,7 +9,7 @@ public class DoorOpener : MonoBehaviour
 
     private void Start()
     {
-        TriggerDelegate.AddDelegate(_ => _activated = true);
+        TriggerDelegate.AddDelegate((_, __) => _activated = true);
     }
 
     private void Update()

@@ -8,6 +8,6 @@ public class LightSwitcher : MonoBehaviour
     private void Start()
     {
         _light = GetComponent<Light>();
-        TriggerDelegate.AddDelegate(_ => _light.enabled = !_light.enabled);
+        TriggerDelegate.AddDelegate((_, __) => _light.enabled = !_light.enabled);
     }
 }

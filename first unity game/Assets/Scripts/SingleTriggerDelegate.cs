@@ -12,6 +12,6 @@ public class SingleTriggerDelegate : MonoBehaviour, ITriggerDelegate
 
     private void OnTriggerEnter(Collider other)
     {
-        _triggerDelegates.ForEach(@delegate => @delegate(this));
+        _triggerDelegates.ForEach(@delegate => @delegate(this, other));
     }
 }

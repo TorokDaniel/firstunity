@@ -23,7 +23,7 @@ public class MultiTriggerDelegate : MonoBehaviour, ITriggerDelegate
         _codeTriggerDelegates.Add(@delegate);
     }
 
-    private void OnSceneTriggerDelegateCalled(ITriggerDelegate @delegate)
+    private void OnSceneTriggerDelegateCalled(ITriggerDelegate @delegate, Collider @delegateCollider)
     {
         if (_activations[@delegate])
         {
@@ -44,6 +44,6 @@ public class MultiTriggerDelegate : MonoBehaviour, ITriggerDelegate
 
     private void CallCodeTriggerDelegates()
     {
-        _codeTriggerDelegates.ForEach(@delegate => @delegate(this));
+        _codeTriggerDelegates.ForEach(@delegate => @delegate(this, null));
     }
 }
