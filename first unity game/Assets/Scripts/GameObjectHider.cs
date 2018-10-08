@@ -6,10 +6,6 @@ public class GameObjectHider : MonoBehaviour
 
     private void Start()
     {
-        TriggerDelegate.AddDelegate(delegate(ITriggerDelegate @delegate)
-        {
-            var objectRenderer = GetComponent<Renderer>();
-            objectRenderer.enabled = false;
-        });
+        TriggerDelegate.AddDelegate(_ => GetComponent<Renderer>().enabled = false);
     }
 }
