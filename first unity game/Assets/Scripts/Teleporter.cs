@@ -9,13 +9,15 @@ public class Teleporter : MonoBehaviour
     
     private void Start()
     {
-        TriggerDelegate.AddDelegate((_, delegateCollider) =>
-        {
-            var destinationTransform = Destination.GetComponent<Transform>();
-            var colliderTransform = delegateCollider.gameObject.GetComponent<Transform>();
+        TriggerDelegate.AddDelegate(OnTriggerActivated);
+    }
 
-            colliderTransform.position = destinationTransform.position + DestinationOffset;
-            colliderTransform.localEulerAngles = DestinationAngle;
-        });
+    private void OnTriggerActivated(ITriggerDelegate triggerDelegate, Collider triggerCollider)
+    {
+        var destinationTransform = Destination.GetComponent<Transform>();
+        var colliderTransform = triggerCollider.gameObject.GetComponent<Transform>();
+
+        colliderTransform.position = destinationTransform.position + DestinationOffset;
+        colliderTransform.localEulerAngles = DestinationAngle;
     }
 }
