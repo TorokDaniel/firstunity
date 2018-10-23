@@ -8,6 +8,7 @@ public class InGameMenu: MonoBehaviour
     {
         _canvas = GetComponent<Canvas>();
         _canvas.enabled = false;
+        _canvas.worldCamera = Camera.main;
     }
 
     private void Update()

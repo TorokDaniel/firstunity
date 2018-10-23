@@ -3,17 +3,13 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager: MonoBehaviour
 {
-    private static LevelManager _instance;
-    public static LevelManager Instance
-    {
-        get { return _instance; }
-    }
+    public static LevelManager Instance { get; private set; }
 
     private void Start()
     {
-        if (_instance == null)
+        if (Instance == null)
         {
-            _instance = this;
+            Instance = this;
             DontDestroyOnLoad(this);
         }
         else
