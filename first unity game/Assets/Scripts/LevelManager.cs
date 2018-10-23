@@ -22,6 +22,11 @@ public class LevelManager: MonoBehaviour
         }
     }
 
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
     public void LoadTutorialScene()
     {
         SceneManager.LoadScene(1);
