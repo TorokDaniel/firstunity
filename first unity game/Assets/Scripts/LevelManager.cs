@@ -20,6 +20,7 @@ public class LevelManager: MonoBehaviour
 
     public void LoadMainMenu()
     {
+        HUD.Destroy();
         SceneManager.LoadScene(0);
     }
 
