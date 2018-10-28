@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Inventory: MonoBehaviour
 {
+    public delegate void Visitor(string id, int quantity);
     public static Inventory Instance { get; private set; } 
     private readonly Dictionary<string, int> _inventory = new Dictionary<string, int>();
 
@@ -14,6 +15,16 @@ public class Inventory: MonoBehaviour
         }
         _inventory[id] = _inventory[id] + 1;
         Debug.Log(id);
+    }
+
+    public void VisitItems(Visitor visitor)
+    {
+        foreach (var item in _inventory)
+        {
+            var id = item.Key;
+            var quantity = item.Value;
+            visitor(id, quantity);
+        }
     }
     
     private void Start()
