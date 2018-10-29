@@ -9,7 +9,8 @@ public class InventoryAction: MonoBehaviour
     [Serializable]
     public class ItemDefinition
     {
-        public string Id;
+        public InventoryItem InventoryItem;
+        [Range(1, 100)]
         public int RequiredQuantity;
     }
 
@@ -22,7 +23,7 @@ public class InventoryAction: MonoBehaviour
     {
         foreach (var item in RequiredItems)
         {
-            _requiredItems.Add(item.Id, item.RequiredQuantity);
+            _requiredItems.Add(item.InventoryItem.Id, item.RequiredQuantity);
         }
     }
 
@@ -38,6 +39,7 @@ public class InventoryAction: MonoBehaviour
         if (hasAllItems)
         {
             Destroy(gameObject);
+            HUDScreen.Instance.DismissPickupItem();
         }
     }
 

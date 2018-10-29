@@ -7,17 +7,17 @@ public class InventoryScreen: SingletonMonoBehaviour<InventoryScreen>
 {  
     
     [Serializable]
-    public class NamedImage
+    public class ItemWithSprite
     {
-        public string Id;
+        public InventoryItem InventoryItem;
         public Sprite Sprite;
     }
     
     public Transform ItemPrefab;
-    public NamedImage[] Images;
+    public ItemWithSprite[] Items;
     
     private Canvas _screen;
-    private readonly Dictionary<string, Sprite> _images = new Dictionary<string, Sprite>();
+    private readonly Dictionary<string, Sprite> _itemSprites = new Dictionary<string, Sprite>();
     private readonly List<Transform> _onScreenItemList = new List<Transform>();
 
     public override void SingletonStart()
@@ -25,9 +25,9 @@ public class InventoryScreen: SingletonMonoBehaviour<InventoryScreen>
         _screen = GetComponent<Canvas>();
         _screen.enabled = false;
             
-        foreach (var image in Images)
+        foreach (var image in Items)
         {
-            _images.Add(image.Id, image.Sprite);
+            _itemSprites.Add(image.InventoryItem.Id, image.Sprite);
         }
     }
 
@@ -82,7 +82,7 @@ public class InventoryScreen: SingletonMonoBehaviour<InventoryScreen>
     {
         var item = Instantiate(ItemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         item.Find("badge").Find("counter").GetComponent<Text>().text = quantity.ToString();
-        item.GetComponent<Image>().sprite = _images[id];
+        item.GetComponent<Image>().sprite = _itemSprites[id];
         return item;
     }
     
