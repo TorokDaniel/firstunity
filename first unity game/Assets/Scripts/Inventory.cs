@@ -2,9 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Inventory: MonoBehaviour
+public class Inventory: SingletonMonoBehaviour<Inventory>
 {
-    public static Inventory Instance { get; private set; } 
     
     private readonly Dictionary<string, int> _items = new Dictionary<string, int>();
     public Dictionary<string, int> Items
@@ -21,19 +20,6 @@ public class Inventory: MonoBehaviour
 
         _items[id] = _items[id] + 1;
         Debug.Log(id);
-    }
-
-    private void Start()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(this);
-        }
-        else
-        {
-            Destroy(this);
-        }
     }
     
 }

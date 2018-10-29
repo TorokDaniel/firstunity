@@ -4,9 +4,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryScreen: MonoBehaviour
-{
-    public static InventoryScreen Instance { get; private set; }
+public class InventoryScreen: SingletonMonoBehaviour<InventoryScreen>
+{  
     
     [Serializable]
     public class NamedImage
@@ -21,25 +20,15 @@ public class InventoryScreen: MonoBehaviour
     private Canvas _screen;
     private readonly Dictionary<string, Sprite> _images = new Dictionary<string, Sprite>();
     private readonly List<Transform> _onScreenItemList = new List<Transform>();
-    
-    private void Start()
+
+    public override void SingletonStart()
     {
-        if (Instance == null)
-        {
-            _screen = GetComponent<Canvas>();
-            _screen.enabled = false;
+        _screen = GetComponent<Canvas>();
+        _screen.enabled = false;
             
-            foreach (var image in Images)
-            {
-                _images.Add(image.Id, image.Sprite);
-            }
-            
-            Instance = this;
-            DontDestroyOnLoad(this);
-        }
-        else
+        foreach (var image in Images)
         {
-            Destroy(this);
+            _images.Add(image.Id, image.Sprite);
         }
     }
 

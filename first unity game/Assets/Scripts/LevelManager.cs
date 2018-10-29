@@ -1,22 +1,7 @@
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelManager: MonoBehaviour
+public class LevelManager: SingletonMonoBehaviour<LevelManager>
 {
-    public static LevelManager Instance { get; private set; }
-
-    private void Start()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(this);
-        }
-        else
-        {
-            Destroy(this);
-        }
-    }
 
     public void LoadMainMenu()
     {

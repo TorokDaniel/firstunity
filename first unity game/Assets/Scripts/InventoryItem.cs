@@ -42,4 +42,5 @@ public class InventoryItem: MonoBehaviour
             Destroy(gameObject);
         }
     }
+    
 }
