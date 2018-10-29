@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -52,14 +53,15 @@ public class InventoryScreen: MonoBehaviour
 
     private void ToggleInventory()
     {
-        _screen.enabled = !_screen.enabled;
         if (!_screen.enabled)
         {
-            ClearScreen();
+            _screen.enabled = true;
+            DisplayItemsOnScreen();
         }
         else
         {
-            DisplayItemsOnScreen();
+            _screen.enabled = false;
+            ClearScreen();
         }
     }
 
@@ -72,22 +74,25 @@ public class InventoryScreen: MonoBehaviour
     private void DisplayItemsOnScreen()
     {
         var currentItemIndex = 0;
-        Inventory.Instance.VisitItems(((id, quantity) =>
+        foreach (var item in Inventory.Instance.Items)
         {
-            var item = CreateItem(id, quantity);
-            _onScreenItemList.Add(item);
+            var id = item.Key;
+            var quantity = item.Value;
+            
+            var onScreenItem = CreateItem(id, quantity);
+            _onScreenItemList.Add(onScreenItem);
             
             var parentTransform = transform.Find(string.Format("Image ({0})", currentItemIndex));
-            item.SetParent(parentTransform);
-            item.transform.position = parentTransform.position;
+            onScreenItem.SetParent(parentTransform);
+            onScreenItem.transform.position = parentTransform.position;
             
             currentItemIndex += 1;
-        }));
+        }
     }
 
     private Transform CreateItem(string id, int quantity)
     {
-        var item = Instantiate(ItemPrefab, new Vector3(50, 0, 50), Quaternion.identity);
+        var item = Instantiate(ItemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         item.Find("badge").Find("counter").GetComponent<Text>().text = quantity.ToString();
         item.GetComponent<Image>().sprite = _images[id];
         return item;
