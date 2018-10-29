@@ -4,15 +4,15 @@ using UnityEngine.Serialization;
 public class InventoryItem: MonoBehaviour
 {
     public string Id;
-    public float PickUpRange = 4;
+    public float PickUpRadius = 1.5f;
 
     private bool _inRange = false;
 
     private void Start()
     {
-        GetComponent<Collider>().isTrigger = true;
-        // TODO: find a way to dynamically extend the "radius"
-        //GetComponent<Collider>().contactOffset = PickUpRange;
+        var inRangeCollider = gameObject.AddComponent<SphereCollider>();
+        inRangeCollider.isTrigger = true;
+        inRangeCollider.radius = PickUpRadius;
     }
 
     private void OnTriggerEnter(Collider other)
