@@ -30,17 +30,14 @@ public class InventoryItem: MonoBehaviour
 
     private void Update()
     {
-        if (!_inRange)
+        if (!_inRange || !Input.GetKeyDown(KeyCode.F))
         {
             return;
         }
         
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            Inventory.Instance.AddItem(Id);
-            HUDScreen.Instance.DismissPickupItem();
-            Destroy(gameObject);
-        }
+        Inventory.Instance.AddItem(Id);
+        HUDScreen.Instance.DismissPickupItem();
+        Destroy(gameObject);
     }
     
 }
