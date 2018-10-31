@@ -1,68 +1,70 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
-public class InventoryItem: MonoBehaviour
+namespace Inventory
 {
-    public string Id;
-    public float PickUpRadius = 1.5f;
-    public bool PickUpByPassing = false;
-
-    private bool _inRange = false;
-
-    private void Start()
+    public class InventoryItem: MonoBehaviour
     {
-        if (PickUpByPassing)
+        public string Id;
+        public float PickUpRadius = 1.5f;
+        public bool PickUpByPassing = false;
+
+        private bool _inRange = false;
+
+        private void Start()
         {
-            GetComponent<Collider>().isTrigger = true;
-        }
+            if (PickUpByPassing)
+            {
+                GetComponent<Collider>().isTrigger = true;
+            }
         
-        var inRangeCollider = gameObject.AddComponent<SphereCollider>();
-        inRangeCollider.isTrigger = true;
-        inRangeCollider.radius = PickUpRadius;
-    }
+            var inRangeCollider = gameObject.AddComponent<SphereCollider>();
+            inRangeCollider.isTrigger = true;
+            inRangeCollider.radius = PickUpRadius;
+        }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (PickUpByPassing)
+        private void OnTriggerEnter(Collider other)
         {
+            if (PickUpByPassing)
+            {
+                PickUp();
+                return;
+            }
+        
+            _inRange = true;
+            HUDScreen.Instance.PickupItem(Id);            
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (PickUpByPassing)
+            {
+                return;            
+            }
+        
+            _inRange = false;
+            HUDScreen.Instance.DismissPickupItem();
+        }
+
+        private void Update()
+        {
+            if (PickUpByPassing)
+            {
+                return;
+            }
+            if (!_inRange || !Input.GetKeyDown(KeyCode.F))
+            {
+                return;
+            }
+        
             PickUp();
-            return;
         }
-        
-        _inRange = true;
-        HUDScreen.Instance.PickupItem(Id);            
-    }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (PickUpByPassing)
+        private void PickUp()
         {
-            return;            
+            global::Inventory.Inventory.Instance.AddItem(Id);
+            HUDScreen.Instance.DismissPickupItem();
+            Destroy(gameObject);
         }
-        
-        _inRange = false;
-        HUDScreen.Instance.DismissPickupItem();
-    }
-
-    private void Update()
-    {
-        if (PickUpByPassing)
-        {
-            return;
-        }
-        if (!_inRange || !Input.GetKeyDown(KeyCode.F))
-        {
-            return;
-        }
-        
-        PickUp();
-    }
-
-    private void PickUp()
-    {
-        Inventory.Instance.AddItem(Id);
-        HUDScreen.Instance.DismissPickupItem();
-        Destroy(gameObject);
-    }
     
+    }
 }

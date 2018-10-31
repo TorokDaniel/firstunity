@@ -1,38 +1,40 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
-public class Inventory: SingletonMonoBehaviour<Inventory>
+namespace Inventory
 {
+    public class Inventory: SingletonMonoBehaviour<Inventory>
+    {
     
-    private readonly Dictionary<string, int> _items = new Dictionary<string, int>();
-    public Dictionary<string, int> Items
-    {
-        get { return _items.ToDictionary(e => e.Key, e => e.Value); }
-    }
-
-    public void AddItem(string id, int quantity = 1)
-    {
-        if (!_items.ContainsKey(id))
+        private readonly Dictionary<string, int> _items = new Dictionary<string, int>();
+        public Dictionary<string, int> Items
         {
-            _items[id] = 0;
+            get { return _items.ToDictionary(e => e.Key, e => e.Value); }
         }
 
-        _items[id] = _items[id] + quantity;
-    }
-
-    public void RemoveItem(string id, int quantity = 1)
-    {
-        if (!_items.ContainsKey(id))
+        public void AddItem(string id, int quantity = 1)
         {
-            return;
+            if (!_items.ContainsKey(id))
+            {
+                _items[id] = 0;
+            }
+
+            _items[id] = _items[id] + quantity;
         }
+
+        public void RemoveItem(string id, int quantity = 1)
+        {
+            if (!_items.ContainsKey(id))
+            {
+                return;
+            }
         
-        _items[id] -= quantity;
-        if (_items[id] <= 0)
-        {
-            _items.Remove(id);
+            _items[id] -= quantity;
+            if (_items[id] <= 0)
+            {
+                _items.Remove(id);
+            }
         }
-    }
     
+    }
 }
