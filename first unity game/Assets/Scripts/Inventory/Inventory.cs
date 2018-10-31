@@ -1,11 +1,25 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Inventory
 {
     public class Inventory: SingletonMonoBehaviour<Inventory>
     {
-    
+
+        public GameObject MainCharacter;
+
+        public override void SingletonStart()
+        {
+            var colliderToMove = GetComponent<SphereCollider>();
+            var newCollider = MainCharacter.AddComponent<SphereCollider>();
+            newCollider.isTrigger = colliderToMove.isTrigger;
+            newCollider.radius = colliderToMove.radius;
+            newCollider.center = colliderToMove.center;
+            
+            Destroy(colliderToMove);
+        }
+
         private readonly Dictionary<string, int> _items = new Dictionary<string, int>();
         public Dictionary<string, int> Items
         {

@@ -5,7 +5,6 @@ namespace Inventory
     public class InventoryItem: MonoBehaviour
     {
         public string Id;
-        public float PickUpRadius = 1.5f;
         public bool PickUpByPassing = false;
 
         private bool _inRange = false;
@@ -16,10 +15,6 @@ namespace Inventory
             {
                 GetComponent<Collider>().isTrigger = true;
             }
-        
-            var inRangeCollider = gameObject.AddComponent<SphereCollider>();
-            inRangeCollider.isTrigger = true;
-            inRangeCollider.radius = PickUpRadius;
         }
 
         private void OnTriggerEnter(Collider other)
