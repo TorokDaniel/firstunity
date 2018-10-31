@@ -56,7 +56,7 @@ namespace Inventory
 
         private void PickUp()
         {
-            global::Inventory.Inventory.Instance.AddItem(Id);
+            Inventory.Instance.AddItem(Id);
             HUDScreen.Instance.DismissPickupItem();
             Destroy(gameObject);
         }

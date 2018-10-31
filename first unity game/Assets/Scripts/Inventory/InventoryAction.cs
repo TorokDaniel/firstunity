@@ -72,7 +72,7 @@ namespace Inventory
 
         private bool HasAllItems()
         {
-            var inventoryItems = global::Inventory.Inventory.Instance.Items;
+            var inventoryItems = Inventory.Instance.Items;
             return _requiredItems.All(item => inventoryItems.ContainsKey(item.Key) && inventoryItems[item.Key] >= item.Value);
         }
 
@@ -82,7 +82,7 @@ namespace Inventory
             {
                 var id = item.Key;
                 var quantity = item.Value;
-                global::Inventory.Inventory.Instance.RemoveItem(id, quantity);
+                Inventory.Instance.RemoveItem(id, quantity);
             }
         }
     
