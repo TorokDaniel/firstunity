@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class InventoryAction: MonoBehaviour
+public class InventoryAction : MonoBehaviour
 {
-    
+
     [Serializable]
     public class ItemDefinition
     {
         public InventoryItem InventoryItem;
-        [Range(1, 100)]
-        public int RequiredQuantity;
+        [Range(1, 100)] public int RequiredQuantity;
     }
 
     public ItemDefinition[] RequiredItems;
@@ -34,12 +33,11 @@ public class InventoryAction: MonoBehaviour
             return;
         }
 
-        var inventoryItems = Inventory.Instance.Items;
-        var hasAllItems = _requiredItems.All(item => inventoryItems.ContainsKey(item.Key) && inventoryItems[item.Key] >= item.Value);
-        if (hasAllItems)
+        if (HasAllItems())
         {
             Destroy(gameObject);
             HUDScreen.Instance.DismissPickupItem();
+            RemoveUsedItems();
         }
     }
 
@@ -60,6 +58,22 @@ public class InventoryAction: MonoBehaviour
         var formattedItemTexts = _requiredItems.Select(item => string.Format("{0} ({1})", item.Key, item.Value));
         var concatenatedItemTexts = string.Join(", ", formattedItemTexts.ToArray());
         return concatenatedItemTexts == "" ? "Nothing." : concatenatedItemTexts;
+    }
+
+    private bool HasAllItems()
+    {
+        var inventoryItems = Inventory.Instance.Items;
+        return _requiredItems.All(item => inventoryItems.ContainsKey(item.Key) && inventoryItems[item.Key] >= item.Value);
+    }
+
+    private void RemoveUsedItems()
+    {
+        foreach (var item in _requiredItems)
+        {
+            var id = item.Key;
+            var quantity = item.Value;
+            Inventory.Instance.RemoveItem(id, quantity);
+        }
     }
     
 }
