@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class InventoryAction : MonoBehaviour
 {
@@ -12,8 +13,15 @@ public class InventoryAction : MonoBehaviour
         public InventoryItem InventoryItem;
         [Range(1, 100)] public int RequiredQuantity;
     }
+    
+    [Serializable]
+    public class GameObjectEvent : UnityEvent<GameObject>
+    {
+
+    }
 
     public ItemDefinition[] RequiredItems;
+    public GameObjectEvent OnUse;
 
     private bool _inRange = false;
     private readonly Dictionary<string, int> _requiredItems = new Dictionary<string, int>();
@@ -35,7 +43,7 @@ public class InventoryAction : MonoBehaviour
 
         if (HasAllItems())
         {
-            Destroy(gameObject);
+            OnUse.Invoke(gameObject);
             HUDScreen.Instance.DismissPickupItem();
             RemoveUsedItems();
         }
