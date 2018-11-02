@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Inventory
 {
@@ -8,6 +9,7 @@ namespace Inventory
         public bool PickUpByPassing = false;
 
         private bool _inRange = false;
+        private GameObject _displayedHUDHint;
 
         private void Start()
         {
@@ -26,7 +28,7 @@ namespace Inventory
             }
         
             _inRange = true;
-            HUDScreen.Instance.PickupItem(Id);            
+            ShowHUDHint();            
         }
 
         private void OnTriggerExit(Collider other)
@@ -37,7 +39,7 @@ namespace Inventory
             }
         
             _inRange = false;
-            HUDScreen.Instance.DismissPickupItem();
+            DismissHUDHint();
         }
 
         private void Update()
@@ -57,8 +59,22 @@ namespace Inventory
         private void PickUp()
         {
             Inventory.Instance.AddItem(Id);
-            HUDScreen.Instance.DismissPickupItem();
+            DismissHUDHint();
             Destroy(gameObject);
+        }
+
+        private void ShowHUDHint()
+        {
+            _displayedHUDHint = Instantiate(Inventory.Instance.ItemHUDHint);
+            _displayedHUDHint.transform.Find("item_name_text").GetComponent<Text>().text = Id;
+            var deltaPosition = new Vector3(0, 1, 0);
+            _displayedHUDHint.transform.position = transform.position + deltaPosition;
+        }
+
+        private void DismissHUDHint()
+        {
+            Destroy(_displayedHUDHint);
+            _displayedHUDHint = null;
         }
     
     }

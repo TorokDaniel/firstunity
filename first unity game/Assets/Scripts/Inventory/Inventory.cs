@@ -8,6 +8,7 @@ namespace Inventory
     {
 
         public GameObject MainCharacter;
+        public GameObject ItemHUDHint;
 
         public override void SingletonStart()
         {
