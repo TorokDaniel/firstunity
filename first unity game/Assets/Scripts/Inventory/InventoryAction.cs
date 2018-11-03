@@ -28,6 +28,11 @@ namespace Inventory
         private bool _inRange = false;
         private readonly Dictionary<string, int> _requiredItems = new Dictionary<string, int>();
 
+        public virtual void OnUseMethod()
+        {
+            
+        }
+
         private void Start()
         {
             foreach (var item in RequiredItems)
@@ -45,8 +50,12 @@ namespace Inventory
 
             if (HasAllItems())
             {
-                OnUse.Invoke(gameObject);
-                HUDScreen.Instance.DismissPickupItem();
+                OnUseMethod();
+                if (OnUse != null)
+                {
+                    OnUse.Invoke(gameObject);                    
+                }
+                
                 RemoveUsedItems();
             }
         }
@@ -54,20 +63,12 @@ namespace Inventory
         private void OnTriggerEnter(Collider other)
         {
             _inRange = true;
-            HUDScreen.Instance.PickupItem("PRESS 'F' WHEN YOU HAVE: " + GenerateRequiredItemText());
         }
 
         private void OnTriggerExit(Collider other)
         {
             _inRange = false;
             HUDScreen.Instance.DismissPickupItem();
-        }
-
-        private string GenerateRequiredItemText()
-        {
-            var formattedItemTexts = _requiredItems.Select(item => string.Format("{0} ({1})", item.Key, item.Value));
-            var concatenatedItemTexts = string.Join(", ", formattedItemTexts.ToArray());
-            return concatenatedItemTexts == "" ? "Nothing." : concatenatedItemTexts;
         }
 
         private bool HasAllItems()
