@@ -4,18 +4,25 @@ using UnityEngine;
 
 public class CoroutineHelper : SingletonMonoBehaviour<CoroutineHelper>
 {
+    
     public delegate void CoroutineCompletionHandler();
 
-    private static Dictionary<string, Coroutine> _runningCoroutines = new Dictionary<string, Coroutine>();
+    private static readonly Dictionary<string, Coroutine> RunningCoroutines = new Dictionary<string, Coroutine>();
         
     public static Coroutine StartCoroutine(string id, IEnumerator coroutine, CoroutineCompletionHandler completionHandler)
     {
-        if (!_runningCoroutines.ContainsKey(id))
+        CoroutineCompletionHandler wrappedCompletionHandler = () =>
         {
-            _runningCoroutines[id] = Instance.StartCoroutine(CoroutineWrapper(coroutine, completionHandler));
+            RunningCoroutines.Remove(id);
+            completionHandler();
+        };
+        
+        if (!RunningCoroutines.ContainsKey(id))
+        {
+            RunningCoroutines[id] = Instance.StartCoroutine(CoroutineWrapper(coroutine, wrappedCompletionHandler));
         }
 
-        return _runningCoroutines[id];
+        return RunningCoroutines[id];
     }
     
     private static IEnumerator CoroutineWrapper(IEnumerator coroutine, CoroutineCompletionHandler completionHandler)
@@ -27,4 +34,5 @@ public class CoroutineHelper : SingletonMonoBehaviour<CoroutineHelper>
         
         completionHandler();
     }
+    
 }
