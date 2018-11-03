@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Inventory
 {
-    public class InventoryAction : MonoBehaviour
+    public class InventoryAction : Action
     {
 
         [Serializable]
@@ -24,66 +23,39 @@ namespace Inventory
 
         public ItemDefinition[] RequiredItems;
         public GameObjectEvent OnUse;
-
-        private bool _inRange = false;
-        private readonly Dictionary<string, int> _requiredItems = new Dictionary<string, int>();
-
+       
         public virtual void OnUseMethod()
         {
             
         }
 
-        private void Start()
+        protected override void OnAction()
         {
-            foreach (var item in RequiredItems)
-            {
-                _requiredItems.Add(item.InventoryItem.Id, item.RequiredQuantity);
-            }
-        }
-
-        private void Update()
-        {
-            if (!_inRange || !Input.GetKeyDown(KeyCode.F))
+            if (!HasAllItems())
             {
                 return;
             }
 
-            if (HasAllItems())
+            OnUseMethod();
+            if (OnUse != null)
             {
-                OnUseMethod();
-                if (OnUse != null)
-                {
-                    OnUse.Invoke(gameObject);                    
-                }
-                
-                RemoveUsedItems();
+                OnUse.Invoke(gameObject);                    
             }
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            _inRange = true;
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            _inRange = false;
-            HUDScreen.Instance.DismissPickupItem();
+            
+            RemoveUsedItems();
         }
 
         private bool HasAllItems()
         {
             var inventoryItems = Inventory.Instance.Items;
-            return _requiredItems.All(item => inventoryItems.ContainsKey(item.Key) && inventoryItems[item.Key] >= item.Value);
+            return RequiredItems.All(item => inventoryItems.ContainsKey(item.InventoryItem.Id) && inventoryItems[item.InventoryItem.Id] >= item.RequiredQuantity);
         }
 
         private void RemoveUsedItems()
         {
-            foreach (var item in _requiredItems)
+            foreach (var item in RequiredItems)
             {
-                var id = item.Key;
-                var quantity = item.Value;
-                Inventory.Instance.RemoveItem(id, quantity);
+                Inventory.Instance.RemoveItem(item.InventoryItem.Id, item.RequiredQuantity);
             }
         }
     

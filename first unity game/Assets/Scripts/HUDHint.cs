@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class HUDHint : MonoBehaviour
@@ -9,7 +10,7 @@ public class HUDHint : MonoBehaviour
     public Vector3 DeltaPosition = new Vector3(0, 0, 0);
     public string Text;
 
-    private GameObject _onSceneHUDHint;
+    internal GameObject OnSceneHudHint;
 
     public void UpdateText(string text)
     {
@@ -25,37 +26,37 @@ public class HUDHint : MonoBehaviour
 
     private void Update()
     {
-        if (_onSceneHUDHint == null)
+        if (OnSceneHudHint == null)
         {
             return;
         }
         
-        _onSceneHUDHint.transform.position = ReferencePosition.position + DeltaPosition;
+        OnSceneHudHint.transform.position = ReferencePosition.position + DeltaPosition;
     }
 
     private void OnExclusiveTriggerEnter(Collider other)
     {
-        _onSceneHUDHint = Instantiate(HUDHintPrefab);
+        OnSceneHudHint = Instantiate(HUDHintPrefab);
         SetTextOnHUDHint();
     }
 
     private void OnExclusiveTriggerExit(Collider other)
     {
-        Destroy(_onSceneHUDHint);
-        _onSceneHUDHint = null;
+        Destroy(OnSceneHudHint);
+        OnSceneHudHint = null;
     }
 
     private void OnDestroy()
     {
-        if (_onSceneHUDHint != null)
+        if (OnSceneHudHint != null)
         {
-            Destroy(_onSceneHUDHint);
+            Destroy(OnSceneHudHint);
         }
     }
 
     private void SetTextOnHUDHint()
     {
-        _onSceneHUDHint.transform.Find("text").GetComponent<Text>().text = Text;
+        OnSceneHudHint.transform.Find("text").GetComponent<Text>().text = Text;
     }
     
 }

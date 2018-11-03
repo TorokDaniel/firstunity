@@ -3,6 +3,9 @@ using UnityEngine;
 public class Action : MonoBehaviour
 {
 
+    public bool SingleUseOnly = true;
+    
+    private bool _alreadyUsed = false;
     private bool _inRange = false;
 
     private void Start()
@@ -13,10 +16,18 @@ public class Action : MonoBehaviour
 
     private void Update()
     {
-        if (_inRange && Input.GetKeyDown(KeyCode.F))
+        if (SingleUseOnly && _alreadyUsed)
         {
-            OnAction();
+            return;
         }
+        
+        if (!_inRange || !Input.GetKeyDown(KeyCode.F))
+        {
+            return;
+        }
+
+        _alreadyUsed = true;
+        OnAction();
     }
 
     private void OnExclusiveTriggerEnter(Collider other)

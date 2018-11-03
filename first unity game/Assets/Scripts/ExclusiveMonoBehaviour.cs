@@ -11,7 +11,6 @@ public class ExclusiveMonoBehaviour : MonoBehaviour
         internal ExclusiveTrigger OnEnter = _ => {};
         internal ExclusiveTrigger OnExit = _=> {};
         internal Collider OnEnterCollider;
-        internal GameObject GameObject;
     }
     
     private static ExclusiveTrigger WrapExclusiveTrigger(ExclusiveTrigger original, ExclusiveTrigger proxy)
@@ -58,11 +57,10 @@ public class ExclusiveMonoBehaviour : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        _registeredExclusiveTrigger.GameObject = gameObject;
         _registeredExclusiveTrigger.OnEnterCollider = other;
         EnqueuedExclusiveTriggers.Add(_registeredExclusiveTrigger);
         
-        if (_activeExclusiveTrigger == null || _activeExclusiveTrigger.GameObject == null)
+        if (_activeExclusiveTrigger == null)
         {
             _activeExclusiveTrigger = GetNextExclusiveTrigger();
             CallNextExclusiveTrigger();
@@ -79,8 +77,34 @@ public class ExclusiveMonoBehaviour : MonoBehaviour
         }
         else
         {
-            var triggerPairIndex = EnqueuedExclusiveTriggers.FindIndex(trigger => trigger.Id == _registeredExclusiveTrigger.Id);
-            EnqueuedExclusiveTriggers.RemoveAt(triggerPairIndex);
+            RemoveRegisteredExclusiveTrigger();
+        }
+    }
+
+    private void RemoveRegisteredExclusiveTrigger()
+    {
+        var triggerPairIndex = EnqueuedExclusiveTriggers.FindIndex(trigger => trigger.Id == _registeredExclusiveTrigger.Id);
+        if (triggerPairIndex > 0)
+        {
+            EnqueuedExclusiveTriggers.RemoveAt(triggerPairIndex);            
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (_activeExclusiveTrigger == null || _registeredExclusiveTrigger == null)
+        {
+            return;
+        }
+        
+        if (_activeExclusiveTrigger.Id == _registeredExclusiveTrigger.Id)
+        {
+            _activeExclusiveTrigger = GetNextExclusiveTrigger();
+            CallNextExclusiveTrigger();
+        }
+        else
+        {
+            RemoveRegisteredExclusiveTrigger();
         }
     }
     
