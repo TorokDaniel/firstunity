@@ -58,8 +58,9 @@ public class ExclusiveMonoBehaviour : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         _registeredExclusiveTrigger.OnEnterCollider = other;
-        EnqueuedExclusiveTriggers.Add(_registeredExclusiveTrigger);
         
+        RemoveRegisteredExclusiveTrigger();
+        EnqueuedExclusiveTriggers.Add(_registeredExclusiveTrigger);
         if (_activeExclusiveTrigger == null)
         {
             _activeExclusiveTrigger = GetNextExclusiveTrigger();
@@ -69,15 +70,12 @@ public class ExclusiveMonoBehaviour : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        RemoveRegisteredExclusiveTrigger();
         if (_activeExclusiveTrigger.Id == _registeredExclusiveTrigger.Id)
         {
             _activeExclusiveTrigger.OnExit(other);
             _activeExclusiveTrigger = GetNextExclusiveTrigger();
             CallNextExclusiveTrigger();
-        }
-        else
-        {
-            RemoveRegisteredExclusiveTrigger();
         }
     }
 
