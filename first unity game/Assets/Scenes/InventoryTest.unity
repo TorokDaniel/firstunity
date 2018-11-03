@@ -1135,6 +1135,7 @@ GameObject:
   - component: {fileID: 700746608}
   - component: {fileID: 700746610}
   - component: {fileID: 700746609}
+  - component: {fileID: 700746611}
   m_Layer: 0
   m_Name: Barrel (2)
   m_TagString: Untagged
@@ -1255,6 +1256,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8db968e7b82411387ffd254308b2466, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &700746611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 700746603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a004fd24a1ed4f40b0d631846aafea2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SingleUseOnly: 1
+  ItemsInside:
+  - {fileID: 114645201783380962, guid: b536711c32484e045bcb09611aaeaecc, type: 2}
 --- !u!1 &806156020 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 149790, guid: 7737647c22c1fc64a88d5cd030c352ce,
@@ -1989,7 +2004,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3f585d7236845f29738b485a87522a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RequiredItems: []
+  SingleUseOnly: 1
+  RequiredItems:
+  - InventoryItem: {fileID: 114645201783380962, guid: b536711c32484e045bcb09611aaeaecc,
+      type: 2}
+    RequiredQuantity: 1
   OnUse:
     m_PersistentCalls:
       m_Calls: []
@@ -2169,6 +2188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a004fd24a1ed4f40b0d631846aafea2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SingleUseOnly: 1
   ItemsInside: []
 --- !u!114 &1465751683
 MonoBehaviour:
@@ -2496,6 +2516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a004fd24a1ed4f40b0d631846aafea2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SingleUseOnly: 1
   ItemsInside:
   - {fileID: 114193600531341222, guid: bc7aa7ec3ad87e245bfc35b4faefb27d, type: 2}
 --- !u!114 &1665873882
@@ -2723,6 +2744,9 @@ MonoBehaviour:
   - InventoryItem: {fileID: 114193600531341222, guid: bc7aa7ec3ad87e245bfc35b4faefb27d,
       type: 2}
     Sprite: {fileID: 21300000, guid: 3ee4f973825dbb54880d91d157e95193, type: 3}
+  - InventoryItem: {fileID: 114645201783380962, guid: b536711c32484e045bcb09611aaeaecc,
+      type: 2}
+    Sprite: {fileID: 21300000, guid: a25212e57f5e7d347900d1402bd22f05, type: 3}
 --- !u!114 &1816489422
 MonoBehaviour:
   m_ObjectHideFlags: 0
