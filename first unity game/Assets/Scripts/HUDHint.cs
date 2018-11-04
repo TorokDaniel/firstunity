@@ -37,6 +37,7 @@ public class HUDHint : MonoBehaviour
     private void OnExclusiveTriggerEnter(Collider other)
     {
         OnSceneHudHint = Instantiate(HUDHintPrefab);
+        OnSceneHudHint.name = name + "_hint";
         SetTextOnHUDHint();
     }
 
