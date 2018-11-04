@@ -33,6 +33,7 @@ namespace Inventory
         {
             if (!HasAllItems())
             {
+                ResetAction();
                 return;
             }
 

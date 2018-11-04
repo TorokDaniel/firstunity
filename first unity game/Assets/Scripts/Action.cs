@@ -44,5 +44,10 @@ public class Action : MonoBehaviour
     {
         
     }
+
+    protected virtual void ResetAction()
+    {
+        _alreadyUsed = false;
+    }
     
 }
