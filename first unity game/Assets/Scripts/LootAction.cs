@@ -1,6 +1,6 @@
 using Inventory;
 
-public class CrateSearchAction : Action
+public class LootAction : Action
 {
     
     public InventoryItem[] ItemsInside;
