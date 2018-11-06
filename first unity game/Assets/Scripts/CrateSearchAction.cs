@@ -20,7 +20,6 @@ public class CrateSearchAction : Action
         {
             hint.UpdateText("Empty");
         }
-        Destroy(this);
     }
     
 }

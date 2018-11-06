@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class HUDHint : MonoBehaviour
+public class HUDHint : MonoBehaviour, ISharedProximityLockDelegate
 {
 
     public GameObject HUDHintPrefab;
@@ -10,18 +10,12 @@ public class HUDHint : MonoBehaviour
     public Vector3 DeltaPosition = new Vector3(0, 0, 0);
     public string Text;
 
-    internal GameObject OnSceneHudHint;
-
-    public void UpdateText(string text)
-    {
-        Text = text;
-        SetTextOnHUDHint();
-    }
+    public GameObject OnSceneHudHint { get; private set; }
+    private ISharedProximityLockHandler _sharedProximityLockHandler;
 
     private void Start()
     {
-        var exclusiveMonoBehaviour = GetComponent<ExclusiveMonoBehaviour>();
-        exclusiveMonoBehaviour.Register(OnExclusiveTriggerEnter, OnExclusiveTriggerExit);
+        _sharedProximityLockHandler = SharedProximityLock.Instance.Register(gameObject, this);
     }
 
     private void Update()
@@ -34,30 +28,48 @@ public class HUDHint : MonoBehaviour
         OnSceneHudHint.transform.position = ReferencePosition.position + DeltaPosition;
     }
 
-    private void OnExclusiveTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        OnSceneHudHint = Instantiate(HUDHintPrefab);
-        OnSceneHudHint.name = name + "_hint";
-        SetTextOnHUDHint();
+        _sharedProximityLockHandler.AcquireLock();
     }
 
-    private void OnExclusiveTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
-        Destroy(OnSceneHudHint);
-        OnSceneHudHint = null;
+        _sharedProximityLockHandler.ReleaseLock();
     }
 
     private void OnDestroy()
     {
-        if (OnSceneHudHint != null)
-        {
-            Destroy(OnSceneHudHint);
-        }
+        _sharedProximityLockHandler.Unregister();
     }
 
-    private void SetTextOnHUDHint()
+    public void OnLockAcquired()
     {
-        OnSceneHudHint.transform.Find("text").GetComponent<Text>().text = Text;
+        OnSceneHudHint = Instantiate(HUDHintPrefab);
+        OnSceneHudHint.name = name + "_HUDHint";
+        SetTextOnHudHint();
+    }
+
+    public void OnLockLost()
+    {
+        Destroy(OnSceneHudHint);
+        OnSceneHudHint = null;
+    }
+    
+    public void UpdateText(string text)
+    {
+        Text = text;
+        SetTextOnHudHint();
+    }
+    
+    private void SetTextOnHudHint()
+    {
+        OnSceneHudHint.transform.Find("text").GetComponent<Text>().text = TransformText(Text);
+    }
+
+    protected virtual string TransformText(string text)
+    {
+        return text;
     }
     
 }

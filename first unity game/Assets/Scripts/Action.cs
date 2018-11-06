@@ -1,17 +1,17 @@
 using UnityEngine;
 
-public class Action : MonoBehaviour
+public class Action : MonoBehaviour, ISharedProximityLockDelegate
 {
 
     public bool SingleUseOnly = true;
     
     private bool _alreadyUsed = false;
     private bool _inRange = false;
+    private ISharedProximityLockHandler _sharedProximityLockHandler;
 
     private void Start()
     {
-        var exclusiveMonoBehaviour = GetComponent<ExclusiveMonoBehaviour>();
-        exclusiveMonoBehaviour.Register(OnExclusiveTriggerEnter, OnExclusiveTriggerExit);
+        _sharedProximityLockHandler = SharedProximityLock.Instance.Register(gameObject, this);
     }
 
     private void Update()
@@ -30,12 +30,27 @@ public class Action : MonoBehaviour
         OnAction();
     }
 
-    private void OnExclusiveTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
+    {
+        _sharedProximityLockHandler.AcquireLock();
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        _sharedProximityLockHandler.ReleaseLock();
+    }
+
+    private void OnDestroy()
+    {
+        _sharedProximityLockHandler.Unregister();
+    }
+
+    public void OnLockAcquired()
     {
         _inRange = true;
     }
 
-    private void OnExclusiveTriggerExit(Collider other)
+    public void OnLockLost()
     {
         _inRange = false;
     }
@@ -49,5 +64,5 @@ public class Action : MonoBehaviour
     {
         _alreadyUsed = false;
     }
-    
+
 }
